@@ -218,7 +218,6 @@ counts_vst_normalized <- vst(dds1, blind = TRUE)
 Plot distribution of data after normalization
 
 ```{r}
-# haven't decided which plots to use
 vst_matrix <- assay(counts_vst_normalized) 
 rlog_matrix <- assay(counts_rlog_normalized)
 hist(vst_matrix)
@@ -288,7 +287,7 @@ pcaDF <- data.frame(
 
 print(pcaPlot)
 
-## make a scree plot to compute PC variance
+## Scree plot to compute PC variance
 pca.var <- pcaRes$sdev^2
 pca.var.per <- round(pca.var/sum(pca.var)*100, 1)
 {
@@ -350,7 +349,6 @@ res_dose2 <- as.data.frame(results(dds3, contrast = c("dose", "24_dose2", "0_dos
 Volcano plot for data exploratory analysis, filtering for significant values with False Discovery Rate \< 0.05 and log fold change greater than 1.
 
 ```{r}
-# check only the negative fold change to see if there's a different pahtway of negative fold changes
 
 results_list <- list(res_baseline_pos_neg_dose1, res_baseline_pos_neg_dose2, res_baseline_pos_doses, res_baseline_neg_doses, res_neg_dose1, res_pos_dose1, res_neg_dose2, res_pos_dose2, res_pos, res_neg, res_dose1, res_dose2)
 
@@ -364,8 +362,6 @@ names(results_list) <- c("Baseline Dose 1", "Baseline Dose 2", "Baseline Conv", 
                                      TRUE ~ "Not significant"),
                     )
   })
-# color by group dose1 and dose2, or neg and pos. 2 plots colored based on condition
-# color by group dose1 and dose2, or neg and pos. 2 plots colored based on condition
 # function to plot and save volcano plot
 .volcano_plot <-  function(x){
   subsetted <- subset(results_list_plot[[x]] %>% tibble::rownames_to_column("gene_symbol"), abs(log2FoldChange) >= 2 & pvalue < 0.05)
@@ -542,8 +538,6 @@ list_gse <- lapply(ls_processed, function(x) GSEA(geneList=x,
 #### Ridgeplot
 Helpful to interpret up/down-regulated pathways.
 ```{r fig.width=18, fig.height=12}
-# change coloring for up and downregulated
-# try also to plot as a heatmap for all the group comparisons
 
 rigdgeplots_list <- lapply(list_gse, ridgeplot)
 lapply(names(rigdgeplots_list), function(x) ggsave(filename = paste0("../", figures.dir, x,"_BTM_plot.pdf"), 
