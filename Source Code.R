@@ -87,9 +87,6 @@ sampleTable <- read.table("../data/metadata/sample_metadata.csv", sep = ",", hea
   mutate(dose = as.factor(plyr::mapvalues(visit, from = c(1,2,4,5), to = c("0_dose1","24_dose1","0_dose2","24_dose2"))),
          group = as.factor(group))
 
-# Remove incomplete sample
-sampleTable<-subset(sampleTable, sample_ID!="P22761_1037_S37")
-
 # Renaming genes based on emsembl annotation
 edb <- EnsDb.Hsapiens.v86
 edb_genes <- genes(edb) %>% as.data.frame()
@@ -102,12 +99,6 @@ counts_raw <- counts_raw %>%
 counts_raw <- aggregate(counts_raw[,-1], list(Geneid=counts_raw[,1]), FUN = sum)
 rownames(counts_raw) <- counts_raw$Geneid
 counts_raw <- dplyr::select(counts_raw, -c(Geneid))
-
-# read antibody data
-
-antibody_data <- read.csv("../data/antibody_data/2022-04-26_antibody-binding-avidity.csv")
-
-# Load normalized transcripts per million
 
 ```
 
@@ -136,7 +127,7 @@ all(rownames(sampleTable$sample_ID) == colnames(counts_raw))
 
 ### Filter data
 
-Plot detection of genes across samples. All samples are more or less close to average so we don't need to discard any samples.
+Plot detection of genes across samples. All samples are more or less close to average so we do not need to discard any samples.
 
 ```{r}
 {
@@ -312,7 +303,6 @@ var$contrib %>%
   as.data.frame() %>%
   arrange(desc(Dim.1)) %>%
   head()
-# many are related to sex, thus for the later analysis we should remove those and also normalize per sex the counts
   
 ```
 
